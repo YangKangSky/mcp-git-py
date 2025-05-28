@@ -14,6 +14,7 @@ from mcp.types import (
 from enum import Enum
 import git
 from pydantic import BaseModel
+import subprocess
 
 class GitStatus(BaseModel):
     repo_path: str
@@ -98,16 +99,19 @@ def git_reset(repo: git.Repo) -> str:
     return "All staged changes reset"
 
 def git_log(repo: git.Repo, max_count: int = 10) -> list[str]:
-    commits = list(repo.iter_commits(max_count=max_count))
-    log = []
-    for commit in commits:
-        log.append(
-            f"Commit: {commit.hexsha}\n"
-            f"Author: {commit.author}\n"
-            f"Date: {commit.authored_datetime}\n"
-            f"Message: {commit.message}\n"
-        )
-    return log
+    try:
+        commits = list(repo.iter_commits('HEAD', max_count=max_count))
+        log_entries = []
+        for commit in commits:
+            log_entries.append(
+                f"commit {commit.hexsha}\n"
+                f"Author: {commit.author.name} <{commit.author.email}>\n"
+                f"Date:   {commit.committed_datetime}\n\n"
+                f"    {commit.message.strip()}\n"
+            )
+        return log_entries
+    except Exception as e:
+        return [f"Error running git log: {str(e)}"]
 
 def git_create_branch(repo: git.Repo, branch_name: str, base_branch: str | None = None) -> str:
     if base_branch:
