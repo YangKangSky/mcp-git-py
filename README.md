@@ -4,6 +4,10 @@
 
 A Model Context Protocol server for Git repository interaction and automation. This server provides tools to read, search, and manipulate Git repositories via Large Language Models.
 
+<a href="https://glama.ai/mcp/servers/@martinsky999/mcp-git-py">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@martinsky999/mcp-git-py/badge" alt="Git Server MCP server" />
+</a>
+
 Please note that mcp-server-git is currently in early development. The functionality and available tools are subject to change and expansion as we continue to develop and improve the server.
 
 ### Tools
